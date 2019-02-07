@@ -38,14 +38,17 @@ public:
         int i = 0;
         string output("");
         while (i < s.length()){
+            
             if(my_map.find(s[i]) != my_map.end()){
                 start = i;
                 end = i;
+                break;
             }
             ++i;
         }
         
-        end++;
+        //end++;
+        cout<<start<<" "<<end<<endl;
         while (end < s.length()){
             
             if (my_map.find(s[end]) != my_map.end()){
@@ -57,9 +60,9 @@ public:
                     
                     //Register maxLength
                     if (end-start+1 > max_len){
-                        max_len = end-start+1;
+                        max_len = end-start;
                         output = s.substr(start,max_len);
-                        cout<<output<<endl;
+                        cout<<"ALL Found"<<output<<endl;
                     }
                     
                     //Increase start until you find a char in t                    
@@ -75,7 +78,7 @@ public:
             ++end;
         }
         if (end-start+1 > max_len){
-            max_len = end-start+1;
+            max_len = end-start;
             output = s.substr(start,max_len);
             cout<<output<<endl;
         }
