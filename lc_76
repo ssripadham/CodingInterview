@@ -1,0 +1,84 @@
+class Solution {
+     unordered_map<char, int> my_map;
+    
+private:
+    
+    void initialize_map(const string & t) {
+        for (int i = 0; i < t.length(); ++i){
+            auto iter = my_map.find(t[i]);
+            if (iter == my_map.end()){
+                my_map[t[i]] = -1;
+            } else {
+                my_map[t[i]]--;
+            }
+        }  
+    }
+    
+    bool isAllCharsFound(const string & t){
+        for (int i = 0; i < t.length(); ++i){
+            auto iter = my_map.find(t[i]);
+            if (iter == my_map.end()){
+                return false;
+            }
+            if (my_map[t[i]] < 0) return false;
+        }
+        return true;
+    }
+    
+public:
+    
+    string minWindow(string s, string t) {
+        
+       initialize_map(t);
+       
+        int start = 0;
+        int max_len = 0;
+        
+        int end = 0;
+        int i = 0;
+        string output("");
+        while (i < s.length()){
+            if(my_map.find(s[i]) != my_map.end()){
+                start = i;
+                end = i;
+            }
+            ++i;
+        }
+        
+        end++;
+        while (end < s.length()){
+            
+            if (my_map.find(s[end]) != my_map.end()){
+           
+                my_map[s[end]]++;
+           
+            
+                if (isAllCharsFound(t)) {
+                    
+                    //Register maxLength
+                    if (end-start+1 > max_len){
+                        max_len = end-start+1;
+                        output = s.substr(start,max_len);
+                        cout<<output<<endl;
+                    }
+                    
+                    //Increase start until you find a char in t                    
+                    while (start <= end){
+                        if (my_map.find(s[start]) != my_map.end()){
+                            my_map[s[start]]--;
+                            break;
+                        }
+                        ++start;
+                    }
+                }
+            }
+            ++end;
+        }
+        if (end-start+1 > max_len){
+            max_len = end-start+1;
+            output = s.substr(start,max_len);
+            cout<<output<<endl;
+        }
+        return output;
+    }
+};
