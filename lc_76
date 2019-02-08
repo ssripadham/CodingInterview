@@ -1,3 +1,16 @@
+/*
+  A 1
+  B 1
+  C 1
+  
+  maxLen = 6
+  
+  A B C
+  11 3 5
+  
+  A D O B  E C O D E B A N C
+        *    *
+*/
 class Solution {
      unordered_map<char, int> my_map;
     
@@ -32,7 +45,7 @@ public:
        initialize_map(t);
        
         int start = 0;
-        int max_len = 0;
+        int max_len = INT_MAX;
         
         int end = 0;
         int i = 0;
@@ -48,40 +61,42 @@ public:
         }
         
         //end++;
-        cout<<start<<" "<<end<<endl;
         while (end < s.length()){
             
             if (my_map.find(s[end]) != my_map.end()){
-           
                 my_map[s[end]]++;
            
             
-                if (isAllCharsFound(t)) {
+                while (isAllCharsFound(t)) {
                     
                     //Register maxLength
-                    if (end-start+1 > max_len){
-                        max_len = end-start;
+                    if (end-start+1 <= max_len){
+                        max_len = end-start+1;
                         output = s.substr(start,max_len);
-                        cout<<"ALL Found"<<output<<endl;
                     }
                     
+                    my_map[s[start]]--;
+                    start++;
+                }
                     //Increase start until you find a char in t                    
-                    while (start <= end){
+                while (start <= end){
                         if (my_map.find(s[start]) != my_map.end()){
-                            my_map[s[start]]--;
                             break;
                         }
                         ++start;
-                    }
                 }
             }
             ++end;
         }
-        if (end-start+1 > max_len){
-            max_len = end-start;
-            output = s.substr(start,max_len);
-            cout<<output<<endl;
+        
+        if (isAllCharsFound(t)) {
+            cout<<"*"<<end<<" "<<start<<endl;
+            if (end-start <= max_len){
+                max_len = end-start+1;
+                output = s.substr(start,max_len);
+            }
         }
+        
         return output;
     }
 };
