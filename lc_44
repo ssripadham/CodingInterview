@@ -1,0 +1,86 @@
+/*
+Given an input string (s) and a pattern (p), implement wildcard pattern matching with support for '?' and '*'.
+
+'?' Matches any single character.
+'*' Matches any sequence of characters (including the empty sequence).
+The matching should cover the entire input string (not partial).
+
+Note:
+
+s could be empty and contains only lowercase letters a-z.
+p could be empty and contains only lowercase letters a-z, and characters like ? or *.
+Example 1:
+
+Input:
+s = "aa"
+p = "a"
+Output: false
+Explanation: "a" does not match the entire string "aa".
+Example 2:
+
+Input:
+s = "aa"
+p = "*"
+Output: true
+Explanation: '*' matches any sequence.
+Example 3:
+
+Input:
+s = "cb"
+p = "?a"
+Output: false
+Explanation: '?' matches 'c', but the second letter is 'a', which does not match 'b'.
+Example 4:
+
+Input:
+s = "adceb"
+p = "*a*b"
+Output: true
+Explanation: The first '*' matches the empty sequence, while the second '*' matches the substring "dce".
+Example 5:
+
+Input:
+s = "acdcb"
+p = "a*c?b"
+Output: false
+*/
+
+class Solution {
+    
+    bool isMatchUtil(string s, string p,int sIndex,int pIndex){
+        
+        if (p == "*") return true;
+        if (pIndex == p.length()){
+            return sIndex == s.length();
+        }
+        
+        if (sIndex == s.length() && p[pIndex] != '*') {
+            return pIndex == p.length();
+        }
+        
+        if (s[sIndex] == p[pIndex] || p[pIndex] == '?'){
+            //cout<<p[pIndex]<<" matches "<<s[sIndex]<<endl;
+            return isMatchUtil(s,p,sIndex+1,pIndex+1);
+        }
+
+        if (p[pIndex] == '*'){
+            //match 0,1...n upto sIndex.length()
+            for (int i = sIndex; i <= s.length(); ++i) {
+                cout<<i<<endl;
+                if (isMatchUtil(s, p, i, pIndex+1)){
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+        
+    }
+    
+    
+public:
+    bool isMatch(string s, string p) {
+    
+       return isMatchUtil(s, p, 0, 0);
+    }
+};
