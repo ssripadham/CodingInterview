@@ -32,6 +32,17 @@ dp[i,j] += a[i, j+1]
 
 1 1 1
 1 1 1 =6
+
+0 1
+1 1  = 2 (if 1 , case 1: atleast one neighbor is 0 : max is max(dp[i-1,j],dp[i][j-1]))
+                 case 2: all neighbor is 1 )
+1 4
+6 0
+      1 1
+      1 1
+0 0 0 1 1     3 6 
+1 1 1 1 1     4 8
+
 */
 class Solution {
 public:
