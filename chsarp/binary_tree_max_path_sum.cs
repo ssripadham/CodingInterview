@@ -38,29 +38,40 @@ Output: 42
  *     }
  * }
  */
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
 public class Solution {
     public int MaxPathSum(TreeNode root) {
+        int maxSum = Int32.MinValue;
+        MaxPathSumUtil(root, ref maxSum);
+        return maxSum;
+    }
+    
+private int MaxPathSumUtil(TreeNode root, ref int  maxSum) {
         
+         
         if (root == null) {
             return 0;
         }
         
-        if (root.left == null && root.right == null){
-            return root.val;
-        }
-        
-        int pathSumLeft = MaxPathSum(root.left);
-        int pathSumRight = MaxPathSum(root.right);
-        if (root.left == null){
-            return Math.Max(Math.Max(root.val, pathSumRight), root.val+pathSumRight);
-        }
-        
-        if (root.right == null){  
-            return Math.Max(Math.Max(root.val, pathSumLeft), root.val+pathSumLeft);
-        }
-        
-        int max = Math.Max(root.val+pathSumLeft+pathSumRight, Math.Max(pathSumLeft, pathSumRight));
-        return Math.Max(root.val, max);
+        int pathSumLeft  = MaxPathSumUtil(root.left, ref maxSum);
+        int pathSumRight = MaxPathSumUtil(root.right, ref maxSum);
+    
+        int leftOrRightOrNode = Math.Max(root.val, root.val + Math.Max(pathSumLeft, pathSumRight));
+        maxSum = Math.Max( maxSum, Math.Max(root.val+pathSumLeft+pathSumRight,leftOrRightOrNode));
+        return leftOrRightOrNode;
         
     }
 }
